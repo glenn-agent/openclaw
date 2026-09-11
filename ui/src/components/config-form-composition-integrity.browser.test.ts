@@ -124,7 +124,6 @@ describe("config form composition integrity", () => {
     });
 
     expect(analysis.unsupportedPaths).toEqual([
-      "retention",
       "guarded",
       "nullableBoolean",
       "ambiguousBooleanLabel",

@@ -337,7 +337,7 @@ describe("config form map integrity", () => {
         type: "object",
         properties: {
           name: { type: "string" },
-          retained: { anyOf: [{ type: "string" }, { const: false }] },
+          retained: { anyOf: [{ type: "boolean", not: { const: true } }, { const: "auto" }] },
         },
       } satisfies JsonSchema;
       const collection = (name: string) =>

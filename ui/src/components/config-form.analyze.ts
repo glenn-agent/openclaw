@@ -77,6 +77,8 @@ const RENDERABLE_UNION_TYPES = new Set([
   "object",
   "array",
 ]);
+const MIXED_LITERAL_RENDERABLE_UNION_TYPES = new Set(["string", "number", "integer"]);
+const MIXED_LITERAL_BRANCH_KEYS = new Set([...SUPPORTED_CONSTRAINT_ONLY_KEYS, "type"]);
 
 function isAnySchema(schema: JsonSchema): boolean {
   const keys = Object.keys(schema ?? {}).filter((key) => !META_KEYS.has(key));
@@ -625,9 +627,14 @@ function normalizeUnion(
       literals.unshift(true, false);
     } else if (
       schema.anyOf === undefined ||
+      nullable ||
       !remaining.every((entry) => {
         const type = schemaType(entry);
-        return Boolean(type) && RENDERABLE_UNION_TYPES.has(String(type));
+        return (
+          Boolean(type) &&
+          MIXED_LITERAL_RENDERABLE_UNION_TYPES.has(String(type)) &&
+          hasOnlySupportedKeywords(entry, MIXED_LITERAL_BRANCH_KEYS)
+        );
       })
     ) {
       return null;
@@ -653,7 +660,10 @@ function normalizeUnion(
     return {
       schema: {
         ...schema,
-        anyOf: [...remaining, ...literals.map((literal) => ({ const: literal }))],
+        anyOf: [
+          ...remaining,
+          ...union.filter((entry) => "const" in entry || Array.isArray(entry.enum)),
+        ],
         oneOf: undefined,
         nullable,
       },
