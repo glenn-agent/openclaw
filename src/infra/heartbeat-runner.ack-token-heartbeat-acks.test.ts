@@ -157,6 +157,11 @@ describe("heartbeat acknowledgements", () => {
       sentText: "HEARTBEAT_OK",
     },
     {
+      name: "truncated NO_REPLY acknowledgement",
+      payload: { text: "NO_R" },
+      sends: 0,
+    },
+    {
       name: "exec summary with trailing acknowledgement",
       payload: { text: "Command completed: uploaded report.txt\nHEARTBEAT_OK" },
       exec: true,

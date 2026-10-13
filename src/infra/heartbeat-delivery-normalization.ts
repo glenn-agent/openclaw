@@ -11,7 +11,7 @@ import {
 } from "../auto-reply/heartbeat-tool-response.js";
 import { stripHeartbeatToken } from "../auto-reply/heartbeat.js";
 import { getReplyPayloadMetadata } from "../auto-reply/reply-payload.js";
-import { isSilentReplyPayloadText } from "../auto-reply/tokens.js";
+import { isSilentReplyPayloadText, isSilentReplyPrefixText } from "../auto-reply/tokens.js";
 import type { ReplyPayload } from "../auto-reply/types.js";
 import { escapeRegExp } from "../utils.js";
 import { truncateHeartbeatPreview } from "./heartbeat-runner-prompt.js";
@@ -79,7 +79,8 @@ function normalizeHeartbeatDelivery(
     const { payload, mode, ackMaxChars } = source;
     const rawText = typeof payload.text === "string" ? payload.text : "";
     const textForStrip = stripLeadingHeartbeatResponsePrefix(rawText, responsePrefix);
-    const isSilentReply = isSilentReplyPayloadText(textForStrip);
+    const isSilentReply =
+      isSilentReplyPayloadText(textForStrip) || isSilentReplyPrefixText(textForStrip);
     const stripped = stripHeartbeatToken(isSilentReply ? "" : textForStrip, {
       mode,
       maxAckChars: ackMaxChars,
