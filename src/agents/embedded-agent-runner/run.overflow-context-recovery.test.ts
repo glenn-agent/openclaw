@@ -273,6 +273,7 @@ describe("recoverEmbeddedRunOverflow", () => {
   it.each([
     "400 Your input exceeds the context window of this model",
     '400 " Trying to keep the first 15857 tokens when context the overflows. However, the model is loaded with context length of only 4096 tokens, which is not enough. Try to load the model with a larger context length, or provide a shorter input. Error Data: n/a, Additional Data: n/a"',
+    "400 <400> InternalError.Algo.InvalidParameter: Range of input length should be [1, 202745]",
   ])("compacts and retries the classified assistant overflow: %s", async (errorMessage) => {
     const assistantOverflowCandidate = makeAssistantMessage({
       stopReason: "error",

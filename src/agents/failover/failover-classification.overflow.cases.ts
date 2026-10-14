@@ -75,6 +75,16 @@ export const overflowCases = [
       { message: "input length 14295 tokens exceeds the model limit" },
     ],
     [
+      "billing-context-dashscope-input-range",
+      {
+        status: 400,
+        code: "invalid_parameter_error",
+        errorType: "invalid_request_error",
+        message:
+          "400 <400> InternalError.Algo.InvalidParameter: Range of input length should be [1, 202745]",
+      },
+    ],
+    [
       "billing-context-stop-reason",
       { message: "Unhandled stop reason: model_context_window_exceeded" },
     ],
