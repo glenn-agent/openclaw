@@ -388,7 +388,7 @@ openclaw onboard --non-interactive --accept-risk \
   --llama-server-api-key "$LLAMA_SERVER_API_KEY"
 ```
 
-`--auth-choice llama-cpp` selects the managed local server instead. `--llama-server-api-key` is optional; if omitted, onboarding checks `LLAMA_SERVER_API_KEY` in env. See [llama.cpp](/plugins/llama-cpp) for endpoint-replacement and auth-profile behavior.
+`--auth-choice llama-cpp` selects the managed local server instead. `--llama-server-api-key` is optional; if omitted, onboarding checks `LLAMA_SERVER_API_KEY` in env. See [llama.cpp](/plugins/llama-cpp) for endpoint-replacement, auth-profile behavior, and the post-v2026.10.5 `--llama-cpp-embedding-only` unattended consent flag for managed embedding-only setup.
 
 Store provider keys as refs instead of plaintext:
 

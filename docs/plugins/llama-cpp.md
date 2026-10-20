@@ -180,6 +180,19 @@ openclaw models auth login --provider llama-cpp --method local
 
 If you use `--profile`, use the same profile for both commands.
 
+For unattended setup, builds after v2026.10.5 also accept the explicit download
+consent flag on the managed llama.cpp auth choice:
+
+```bash
+openclaw onboard --non-interactive --accept-risk \
+  --auth-choice llama-cpp --llama-cpp-embedding-only
+```
+
+If your installed CLI reports that `--llama-cpp-embedding-only` is not
+recognized, use the interactive commands above. The flag is not available in
+v2026.10.5, and the interactive route reaches the same embedding-only setup
+without requiring that newer unattended option.
+
 If the llama.cpp provider has any configured chat models, embedding-only setup
 leaves it unchanged. Move any chat routes to another provider and remove those
 model entries before retrying. An existing external llama.cpp server config
