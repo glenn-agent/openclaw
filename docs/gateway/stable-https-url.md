@@ -159,6 +159,23 @@ Confirm that MagicDNS and HTTPS certificates are enabled in the Tailscale admin 
 
 Update Tailscale and confirm that your installed client build exposes the current `tailscale serve` command. The Serve CLI changed in Tailscale 1.52. See the [Tailscale Serve command reference](https://tailscale.com/docs/reference/tailscale-cli/serve).
 
+### Startup says Tailscale needs sudo or operator access
+
+OpenClaw first tries to manage the Serve route as the Gateway user. If Tailscale requires a password prompt or `sudo -n` fails, give that user Tailscale operator access on the Gateway host, then restart the Gateway:
+
+```bash
+sudo tailscale set --operator=$USER
+openclaw gateway restart
+```
+
+Run the command as the same local user that runs `openclaw gateway restart`. This grants that user permission to manage local Tailscale settings; it does not change Gateway authentication, device pairing, or tailnet access controls. See [Tailscale prerequisites and limits](/gateway/tailscale#tailscale-prerequisites-and-limits) for the managed Serve/Funnel startup behavior.
+
+### Browser works but the Android app says operator offline
+
+Browser access, Tailscale identity-header auth, and Android node/operator pairing are separate checks. A browser can load the Control UI through Tailscale while Android still lacks an authenticated operator session. In Android, **Connected (operator offline)** means the node side is connected but the operator connection is not usable yet.
+
+On the phone, confirm Tailscale DNS is enabled and that the Serve URL opens in a browser. Then open **Settings → Gateway** in the Android app and reconnect or add the Gateway again with a fresh mobile setup code generated from Control UI (**Devices → Pair device**) or `openclaw qr --remote`. If the app reports **Gateway token needed**, enter the configured Gateway token or edit the connection with a setup code that carries the expected credentials. If approval is required, approve the Android device on the Gateway before retrying. See [Android connection setup](/platforms/android#connection-runbook) for the full recovery flow.
+
 ### Tailscale identity headers are not accepted
 
 Confirm that `gateway.auth.allowTailscale` is `true` and that the request arrives through the Serve URL. Direct loopback, LAN, raw tailnet-IP, and custom reverse-proxy requests do not qualify for Tailscale identity-header auth.
